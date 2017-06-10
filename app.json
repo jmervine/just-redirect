@@ -1,0 +1,9 @@
+{
+  "name": "just redirect to a target",
+  "description": "just redirect to a target",
+  "repository": "https://github.com/jmervine/just-redirect",
+  "keywords": ["redirect", "static"],
+  "env": {
+      "REDIRECT_TARGET": "required"
+  }
+}
