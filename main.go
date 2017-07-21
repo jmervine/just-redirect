@@ -9,7 +9,7 @@ import (
 var target, port, bind string
 
 func redirect(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, target, 301)
+	http.Redirect(w, r, target, 302)
 }
 
 func main() {
