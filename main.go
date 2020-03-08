@@ -8,28 +8,31 @@ import (
 
 var target, port, bind string
 
+func config() {
+    var ok bool
+	if target, ok = os.LookupEnv("REDIRECT_TARGET"); !ok {
+		log.Fatal("REDIRECT_TARGET required")
+	}
+
+	if port, ok = os.LookupEnv("PORT"); !ok {
+		port = "3000"
+	}
+
+	if bind, ok = os.LookupEnv("BIND"); !ok {
+        bind = "0.0.0.0"
+    }
+}
+
 func redirect(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, target, 302)
 }
 
 func main() {
-	target = os.Getenv("REDIRECT_TARGET")
-	if target == "" {
-		panic("REDIRECT_TARGET required")
-	}
-
-	port = os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-	}
-
-	bind = os.Getenv("BIND")
+    log.SetFlags(0)
+    config()
 
 	http.HandleFunc("/", redirect)
 	listen := bind + ":" + port
 	print("listening on: " + listen + "\n")
-	err := http.ListenAndServe(listen, nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	log.Fatal(http.ListenAndServe(listen, nil))
 }
